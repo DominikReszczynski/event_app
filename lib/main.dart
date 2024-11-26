@@ -1,16 +1,18 @@
 import 'package:event_app/bottom_bar.dart';
 import 'package:event_app/global.dart';
-import 'package:event_app/views/Slaskie.dart';
-import 'package:event_app/views/events.dart';
-import 'package:event_app/views/explore.dart';
-import 'package:event_app/views/news.dart';
+import 'package:event_app/views/slaskie_view.dart';
+import 'package:event_app/views/events_view.dart';
+import 'package:event_app/views/explore_view.dart';
+import 'package:event_app/views/news_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -32,18 +34,18 @@ class _EventsScreenState extends State<EventsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: ValueListenableBuilder<MainViews>(
-        valueListenable: currentSite,
+        valueListenable:
+            currentSite, // Observing the global `currentSite` for changes.
         builder: (context, currentSiteValue, child) {
-          return _buildBody();
+          return _buildBody(); // Dynamically build the screen based on the selected view.
         },
       ),
-      bottomNavigationBar: const BottomBar(),
+      bottomNavigationBar: const BottomBar(), // Custom bottom navigation bar.
     );
   }
 
-  // Function building content based on currentSite
+  // Builds the appropriate content widget based on the currentSite value.
   Widget _buildBody() {
     switch (currentSite.value) {
       case MainViews.slask:

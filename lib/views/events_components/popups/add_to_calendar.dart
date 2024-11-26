@@ -6,24 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AddToCalendar extends StatefulWidget {
-  final Event data;
+  final Event data; // Event data passed to the calendar form
 
-  AddToCalendar({required this.data});
+  const AddToCalendar({super.key, required this.data});
 
   @override
-  _AddToCalendarState createState() => _AddToCalendarState();
+  AddToCalendarState createState() => AddToCalendarState();
 }
 
-class _AddToCalendarState extends State<AddToCalendar> {
-  bool isAllDay = false;
-  String repeatOption = "Nigdy";
-  String calendarOption = "Dom";
-  String inviteesOption = "Brak";
-  String alertOption = "W dniu wydarzenia (9.00)";
-  String secondAlertOption = "Brak";
+class AddToCalendarState extends State<AddToCalendar> {
+  // Form state variables
+  bool isAllDay = false; // Indicates if the event lasts all day
+  String repeatOption = "Nigdy"; // Event repeat option
+  String calendarOption = "Dom"; // Selected calendar
+  String inviteesOption = "Brak"; // Selected invitees
+  String alertOption = "W dniu wydarzenia (9.00)"; // First alert
+  String secondAlertOption = "Brak"; // Second alert
 
-  DateTime startDate = DateTime.now();
-  DateTime endDate = DateTime.now().add(const Duration(days: 1));
+  DateTime startDate = DateTime.now(); // Event start date
+  DateTime endDate =
+      DateTime.now().add(const Duration(days: 1)); // Event end date
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
+          // AppBar section with a back button
           SliverAppBar(
             title: const Align(
               alignment: Alignment.topLeft,
@@ -57,6 +60,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
               },
             ),
           ),
+          // Main content section
           SliverPadding(
             padding: EdgeInsets.symmetric(
               vertical: 16.0,
@@ -68,6 +72,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
+                  // Event title
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
@@ -79,6 +84,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                     ),
                   ),
                   const Divider(height: 30, thickness: 2),
+                  // Event location
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
@@ -91,6 +97,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                     ),
                   ),
                   const SizedBox(height: 40),
+                  // All-day event toggle
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
@@ -115,18 +122,21 @@ class _AddToCalendarState extends State<AddToCalendar> {
                     ),
                   ),
                   const Divider(height: 30, thickness: 1, color: Colors.black),
+                  // Start date picker
                   _buildDatePickerRow("Początek", startDate, (date) {
                     setState(() {
                       startDate = date;
                     });
                   }),
                   const Divider(height: 30, thickness: 1),
+                  // End date picker
                   _buildDatePickerRow("Koniec", endDate, (date) {
                     setState(() {
                       endDate = date;
                     });
                   }),
                   const Divider(height: 30, thickness: 1),
+                  // Repeat option dropdown
                   _buildDropdownRow("Powtarzaj", repeatOption, [
                     "Nigdy",
                     "Codziennie",
@@ -138,6 +148,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                     });
                   }, true),
                   const Divider(height: 30, thickness: 1, color: Colors.black),
+                  // Calendar selection dropdown
                   _buildDropdownRow(
                       "Kalendarz", calendarOption, ["Dom", "Praca"], (value) {
                     setState(() {
@@ -145,6 +156,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                     });
                   }, true),
                   const Divider(height: 30, thickness: 1, color: Colors.black),
+                  // Invitees dropdown
                   _buildDropdownRow(
                     "Zaproszeni",
                     inviteesOption,
@@ -157,6 +169,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                     false,
                   ),
                   const Divider(height: 30, thickness: 1),
+                  // First alert dropdown
                   _buildDropdownRow(
                     "Alert",
                     alertOption,
@@ -169,6 +182,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                     true,
                   ),
                   const Divider(height: 30, thickness: 1, color: Colors.black),
+                  // Second alert dropdown
                   _buildDropdownRow(
                     "2. alert",
                     secondAlertOption,
@@ -182,6 +196,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                   ),
                   const Divider(height: 30, thickness: 1),
                   const SizedBox(height: 50),
+                  // Buttons for cancel and add actions
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -220,18 +235,19 @@ class _AddToCalendarState extends State<AddToCalendar> {
     );
   }
 
+  // Builds a date picker row for start/end date selection
   Widget _buildDatePickerRow(
       String label, DateTime date, ValueChanged<DateTime> onDatePicked) {
     return InkWell(
       onTap: () async {
         DateTime? picked = await showDatePicker(
           context: context,
-          initialDate: date,
-          firstDate: DateTime(2000),
-          lastDate: DateTime(2100),
+          initialDate: date, // Current date as default
+          firstDate: DateTime(2000), // Earliest selectable date
+          lastDate: DateTime(2100), // Latest selectable date
         );
         if (picked != null) {
-          onDatePicked(picked);
+          onDatePicked(picked); // Updates the selected date
         }
       },
       child: Padding(
@@ -240,13 +256,13 @@ class _AddToCalendarState extends State<AddToCalendar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              label,
+              label, // Label for the date picker
               style: const TextStyle(fontSize: 16),
             ),
             Row(
               children: [
                 Text(
-                  "${date.day}.${date.month}.${date.year}",
+                  "${date.day}.${date.month}.${date.year}", // Display formatted date
                   style: const TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w700,
@@ -264,6 +280,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
     );
   }
 
+  // Builds a dropdown row for selecting options
   Widget _buildDropdownRow(String label, String value, List<String> options,
       ValueChanged<String?> onChanged, bool isMain) {
     return Padding(
@@ -274,7 +291,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              label,
+              label, // Label for the dropdown
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: isMain ? FontWeight.w900 : FontWeight.w300,
@@ -296,7 +313,7 @@ class _AddToCalendarState extends State<AddToCalendar> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              option,
+                              option, // Dropdown item text
                               style: const TextStyle(color: Colors.grey),
                             ),
                           ],

@@ -2,10 +2,10 @@ import 'package:event_app/global.dart';
 import 'package:flutter/material.dart';
 
 class CustomSlider extends StatefulWidget {
-  final double value;
-  final double min;
-  final double max;
-  final ValueChanged<double> onChanged;
+  final double value; // Current value of the slider
+  final double min; // Minimum value of the slider
+  final double max; // Maximum value of the slider
+  final ValueChanged<double> onChanged; // Callback for value changes
 
   const CustomSlider({
     super.key,
@@ -16,10 +16,10 @@ class CustomSlider extends StatefulWidget {
   });
 
   @override
-  _CustomSliderState createState() => _CustomSliderState();
+  CustomSliderState createState() => CustomSliderState();
 }
 
-class _CustomSliderState extends State<CustomSlider> {
+class CustomSliderState extends State<CustomSlider> {
   late double sliderWidth;
   late double thumbPosition;
 
@@ -29,10 +29,14 @@ class _CustomSliderState extends State<CustomSlider> {
       builder: (context, constraints) {
         sliderWidth = constraints.maxWidth;
 
-        // Obliczanie pozycji "thumb" na podstawie wartości
+        // Calculate the position of the thumb based on the current value
         thumbPosition = (widget.value - widget.min) /
             (widget.max - widget.min) *
-            (sliderWidth + 0);
+            sliderWidth;
+
+        // Offset correction ensures the label stays aligned with the thumb
+        double correction =
+            10 - (widget.value - widget.min) / (widget.max - widget.min) * 20;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -48,11 +52,11 @@ class _CustomSliderState extends State<CustomSlider> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "0km",
+                          "0km", // Left label for the slider
                           style: TextStyle(color: Colors.grey),
                         ),
                         Text(
-                          "100km",
+                          "100km", // Right label for the slider
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
@@ -61,6 +65,7 @@ class _CustomSliderState extends State<CustomSlider> {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
+                      // Slider component
                       SliderTheme(
                         data: SliderThemeData(
                           thumbShape: const RoundSliderThumbShape(
@@ -77,12 +82,15 @@ class _CustomSliderState extends State<CustomSlider> {
                           onChanged: widget.onChanged,
                         ),
                       ),
+                      // Label positioned dynamically with the thumb
                       Positioned(
-                        left:
-                            thumbPosition - 40, // -40 = szerokość kontenera / 2
-                        top: 30,
+                        left: thumbPosition -
+                            40 +
+                            correction, // Dynamic position for the label
+                        top: 30, // Offset to position it below the slider
                         child: DistanceLabel(
-                            label: widget.value.toStringAsFixed(0)),
+                            label:
+                                widget.value.toStringAsFixed(0)), // Label text
                       ),
                     ],
                   ),
@@ -97,8 +105,9 @@ class _CustomSliderState extends State<CustomSlider> {
   }
 }
 
+// Widget displaying the distance label with a custom background and arrow pointer
 class DistanceLabel extends StatelessWidget {
-  final String label;
+  final String label; // Text of the label
 
   const DistanceLabel({super.key, required this.label});
 
@@ -106,10 +115,12 @@ class DistanceLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Custom arrow pointing to the slider thumb
         CustomPaint(
           size: const Size(10, 5),
           painter: ArrowPainter(),
         ),
+        // Label container with styling
         Container(
           width: 80,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -139,22 +150,23 @@ class DistanceLabel extends StatelessWidget {
   }
 }
 
+// Custom painter for the arrow pointing to the slider thumb
 class ArrowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = mainGreen;
 
     final path = Path()
-      ..moveTo(size.width / 2, 0)
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
-      ..close();
+      ..moveTo(size.width / 2, 0) // Top center of the arrow
+      ..lineTo(size.width, size.height) // Bottom right of the arrow
+      ..lineTo(0, size.height) // Bottom left of the arrow
+      ..close(); // Closes the path
 
-    canvas.drawPath(path, paint);
+    canvas.drawPath(path, paint); // Draws the arrow
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return false; // No need to repaint as the arrow doesn't change dynamically
   }
 }

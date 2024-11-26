@@ -13,12 +13,13 @@ class EventsView extends StatefulWidget {
   const EventsView({super.key});
 
   @override
-  _EventsViewState createState() => _EventsViewState();
+  EventsViewState createState() => EventsViewState();
 }
 
-class _EventsViewState extends State<EventsView> {
-  bool searchBarIsVisible = false; // Ustawiona domyślnie na false
+class EventsViewState extends State<EventsView> {
+  bool searchBarIsVisible = false;
 
+  // Shows the event details popup dialog.
   void showPopupDialog(BuildContext context, Event data) {
     showDialog(
       useSafeArea: false,
@@ -29,13 +30,15 @@ class _EventsViewState extends State<EventsView> {
     );
   }
 
+  // Shows the filter popup dialog.
   void showFilterDialog(BuildContext context) {
     showDialog(
-        useSafeArea: false,
-        context: context,
-        builder: (BuildContext context) {
-          return FiltersScreen();
-        });
+      useSafeArea: false,
+      context: context,
+      builder: (BuildContext context) {
+        return const FiltersScreen();
+      },
+    );
   }
 
   @override
@@ -59,21 +62,24 @@ class _EventsViewState extends State<EventsView> {
                   color: mainDarkBlue,
                   size: 35,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  // Handle back navigation.
+                },
               ),
               actions: [
                 IconButton(
                   icon: const Icon(CupertinoIcons.search),
                   onPressed: () {
                     setState(() {
-                      searchBarIsVisible = !searchBarIsVisible;
+                      searchBarIsVisible =
+                          !searchBarIsVisible; // Toggles search bar visibility.
                     });
                   },
                 ),
                 IconButton(
                   icon: const Icon(CupertinoIcons.slider_horizontal_3),
                   onPressed: () {
-                    showFilterDialog(context);
+                    showFilterDialog(context); // Opens the filter dialog.
                   },
                 ),
               ],
@@ -82,9 +88,11 @@ class _EventsViewState extends State<EventsView> {
         },
         body: Column(
           children: [
+            // Conditionally shows the search bar.
             if (searchBarIsVisible)
               const Padding(
                 padding: EdgeInsets.all(10.0),
+                // Displays the search bar.
                 child: CustomSearchBar(),
               ),
             Expanded(
@@ -92,16 +100,18 @@ class _EventsViewState extends State<EventsView> {
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(10.0),
                 children: [
+                  // Displays carousel of images.
                   EventCarousel(
                     images: carouselImagesList,
                   ),
                   const SizedBox(height: 10),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).orientation ==
-                                Orientation.portrait
-                            ? 10.0
-                            : 80),
+                      horizontal: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? 10.0
+                          : 80,
+                    ),
                     child: Column(
                       children: eventList
                           .map(
@@ -112,7 +122,7 @@ class _EventsViewState extends State<EventsView> {
                           )
                           .toList(),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

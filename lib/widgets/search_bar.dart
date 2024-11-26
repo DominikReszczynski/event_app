@@ -17,7 +17,7 @@ class _SearchBarState extends State<CustomSearchBar> {
             : 80,
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(100),
@@ -26,23 +26,23 @@ class _SearchBarState extends State<CustomSearchBar> {
           cursorColor: Colors.black,
           onChanged: (value) {},
           decoration: const InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(
+            contentPadding:  EdgeInsets.symmetric(
               vertical: 0,
             ),
             border: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: Colors.transparent,
                 width: 1.0,
               ),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: Colors.transparent,
                 width: 1.0,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: Colors.transparent,
                 width: 1.0,
               ),

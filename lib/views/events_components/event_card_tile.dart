@@ -2,9 +2,10 @@ import 'package:event_app/global.dart';
 import 'package:event_app/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class EventCardTile extends StatefulWidget {
-  final Event data;
+  final Event data; // Event data to be displayed in the card
   const EventCardTile({super.key, required this.data});
 
   @override
@@ -12,7 +13,8 @@ class EventCardTile extends StatefulWidget {
 }
 
 class _EventCardTileState extends State<EventCardTile> {
-  bool isFavorite = false;
+  bool isFavorite = false; // Tracks if the event is marked as a favorite
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -34,9 +36,41 @@ class _EventCardTileState extends State<EventCardTile> {
                 height: 120,
                 width: 120,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child; // Display the image when fully loaded
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1)
+                            : null, // Show progress if available
+                        color: Colors.blueAccent,
+                        strokeWidth: 2.5,
+                      ),
+                    );
+                  }
+                },
+                // Icon for loading error
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 120,
+                    width: 120,
+                    decoration: const BoxDecoration(color: mainGrey),
+                    child: Center(
+                      child: Icon(
+                        MdiIcons.wifiRemove,
+                        size: 50,
+                        color: Colors.red,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(width: 5.0),
+            // Title, location, date
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,9 +79,7 @@ class _EventCardTileState extends State<EventCardTile> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 5,
-                      ),
+                      const SizedBox(height: 5),
                       Text(
                         widget.data.title,
                         style: const TextStyle(
@@ -73,9 +105,7 @@ class _EventCardTileState extends State<EventCardTile> {
                           color: Colors.grey,
                         ),
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
+                      const SizedBox(height: 5),
                     ],
                   ),
                 ],
@@ -86,6 +116,7 @@ class _EventCardTileState extends State<EventCardTile> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // Favorite Icon
                   InkWell(
                     onTap: () {
                       setState(() {

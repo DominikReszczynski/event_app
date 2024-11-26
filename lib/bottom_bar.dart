@@ -53,13 +53,14 @@ class _BottomBarState extends State<BottomBar> {
       ],
       onTap: (index) {
         setState(() {
+          // Updates the global ValueNotifier with the selected view.
           currentSite.value = _mapIndexToEnum(index);
         });
       },
     );
   }
 
-  // Mapping enum to index
+  // Maps the MainViews enum to the corresponding BottomNavigationBar index.
   int _mapEnumToIndex(MainViews view) {
     switch (view) {
       case MainViews.slask:
@@ -73,7 +74,7 @@ class _BottomBarState extends State<BottomBar> {
     }
   }
 
-  // Mapping index to enum
+  // Maps the BottomNavigationBar index to the corresponding MainViews enum.
   MainViews _mapIndexToEnum(int index) {
     switch (index) {
       case 0:
@@ -85,7 +86,8 @@ class _BottomBarState extends State<BottomBar> {
       case 3:
         return MainViews.explore;
       default:
-        return MainViews.events;
+        return MainViews
+            .events; // Fallback to "events" if the index is invalid.
     }
   }
 }

@@ -7,11 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class EventCardDetails extends StatelessWidget {
-  final Event data;
+  final Event data; // Event data to be displayed
   const EventCardDetails({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
+    // Function to show a popup for adding the event to the calendar
     void showCalendarPopup(BuildContext context, Event data) {
       showDialog(
         useSafeArea: false,
@@ -22,6 +23,7 @@ class EventCardDetails extends StatelessWidget {
       );
     }
 
+    // List of buttons with actions such as adding to the calendar or sharing
     List<Map<String, dynamic>> buttonsDataList = [
       {
         'title': "Dodaj do\nkalendarza",
@@ -43,6 +45,7 @@ class EventCardDetails extends StatelessWidget {
       {'title': "Strona\nWWW", 'icon': MdiIcons.web, 'onPress': () {}}
     ];
 
+    // List of additional event information, e.g., performers or program
     List<Map<String, dynamic>> eventInfoList = [
       {'title': 'Wykonawcy', 'list': data.contractors},
       {'title': 'Program', 'list': data.eventProgram}
@@ -79,17 +82,20 @@ class EventCardDetails extends StatelessWidget {
             padding: EdgeInsets.zero,
             physics: const BouncingScrollPhysics(),
             children: [
+              // Event title
               Text(
                 data.title,
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
               ),
+              // Event subtitle
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Text(data.secondTitle,
                     style: const TextStyle(
                         fontSize: 22, fontWeight: FontWeight.w400)),
               ),
+              // Date and time
               Text(
                 '${DateFormat('dd.MM.yyyy').format(data.date)} r. | g. ${DateFormat('HH:mm').format(data.date)}',
                 style: const TextStyle(
@@ -97,6 +103,7 @@ class EventCardDetails extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     color: mainDarkBlue),
               ),
+              // Event location
               Padding(
                 padding: const EdgeInsets.only(top: 6, bottom: 15),
                 child: Text(
@@ -108,10 +115,10 @@ class EventCardDetails extends StatelessWidget {
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(7)),
                 child: AspectRatio(
-                  aspectRatio: MediaQuery.of(context).orientation ==
-                          Orientation.portrait
-                      ? 16 / 11
-                      : 16 / 9, // Zmienione proporcje dla orientacji poziomej
+                  aspectRatio:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 16 / 11
+                          : 16 / 9,
                   child: Image.network(
                     data.imageUrl,
                     fit: BoxFit.cover,
@@ -129,23 +136,23 @@ class EventCardDetails extends StatelessWidget {
                             children: [
                               InkWell(
                                   onTap: () {
-                                    e['onPress']();
+                                    e['onPress'](); // Trigger button action
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
-                                        color: mainGrey,
+                                        color: mainGrey, // Button background
                                         borderRadius:
                                             BorderRadius.circular(100)),
                                     child: Icon(
-                                      e['icon'],
+                                      e['icon'], // Button icon
                                       color: const Color.fromARGB(
                                           255, 218, 231, 232),
                                       size: 40,
                                     ),
                                   )),
                               Text(
-                                e['title'],
+                                e['title'], // Button title
                                 maxLines: 3,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
@@ -167,7 +174,7 @@ class EventCardDetails extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${e['title']}:',
+                              '${e['title']}:', // Section title
                               style: const TextStyle(fontSize: 14),
                             ),
                             ...e['list'].map((item) {
@@ -178,14 +185,14 @@ class EventCardDetails extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const Icon(
-                                      Icons.circle,
+                                      Icons.circle, // Bullet icon
                                       size: 4,
                                       color: Colors.black,
                                     ),
                                     const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
-                                        item,
+                                        item, // Item text
                                         style: const TextStyle(fontSize: 14),
                                       ),
                                     ),
@@ -205,8 +212,8 @@ class EventCardDetails extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(100)),
                             child: Icon(
                               data.isPaid
-                                  ? MdiIcons.currencyUsd
-                                  : MdiIcons.currencyUsdOff,
+                                  ? MdiIcons.currencyUsd // Paid event icon
+                                  : MdiIcons.currencyUsdOff, // Free event icon
                               size: 18,
                             ),
                           ),
@@ -215,7 +222,7 @@ class EventCardDetails extends StatelessWidget {
                           ),
                           Text(
                             data.isPaid
-                                ? "Wydazenie płatne"
+                                ? "Wydarzenie płatne"
                                 : "Wydarzenie bezpłatne",
                             style: const TextStyle(
                                 fontWeight: FontWeight.w300, fontSize: 12),

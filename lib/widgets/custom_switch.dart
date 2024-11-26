@@ -1,21 +1,22 @@
 import 'package:event_app/global.dart';
 import 'package:flutter/material.dart';
 
+// CustomSwitch is a reusable custom switch widget.
 class CustomSwitch extends StatefulWidget {
-  final bool value;
-  final ValueChanged<bool> onChanged;
+  final bool value; // Current state of the switch
+  final ValueChanged<bool> onChanged; // Callback when the switch is toggled
 
   const CustomSwitch({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
-  _CustomSwitchState createState() => _CustomSwitchState();
+  CustomSwitchState createState() => CustomSwitchState();
 }
 
-class _CustomSwitchState extends State<CustomSwitch> {
+class CustomSwitchState extends State<CustomSwitch> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -34,6 +35,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
         child: Stack(
           alignment: Alignment.center,
           children: [
+            // Display the "check" icon when the switch is ON
             if (widget.value)
               const Positioned(
                 right: 8,
@@ -44,6 +46,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
                 ),
               ),
 
+            // Display the "close" icon when the switch is OFF
             if (!widget.value)
               const Positioned(
                 left: 8,
@@ -53,7 +56,8 @@ class _CustomSwitchState extends State<CustomSwitch> {
                   color: Colors.white,
                 ),
               ),
-            // Dot with icon
+
+            // Circular thumb with dynamic alignment and icon
             AnimatedAlign(
               alignment:
                   widget.value ? Alignment.centerRight : Alignment.centerLeft,
@@ -69,7 +73,7 @@ class _CustomSwitchState extends State<CustomSwitch> {
                   child: Icon(
                     widget.value ? Icons.check : Icons.close,
                     size: 16.0,
-                    color: widget.value ? mainGreen : Colors.grey,
+                    color: widget.value ? mainGreen : Colors.grey, // Icon color
                   ),
                 ),
               ),

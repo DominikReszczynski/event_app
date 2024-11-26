@@ -2,14 +2,16 @@ import 'package:event_app/global.dart';
 import 'package:event_app/widgets/distance_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class FiltersScreen extends StatefulWidget {
+  const FiltersScreen({super.key});
+
   @override
-  _FiltersScreenState createState() => _FiltersScreenState();
+  FiltersScreenState createState() => FiltersScreenState();
 }
 
-class _FiltersScreenState extends State<FiltersScreen> {
+class FiltersScreenState extends State<FiltersScreen> {
+  // Filter categories and their state
   final Map<String, bool> baseFilters = {
     "Kultura": false,
     "Oświata": false,
@@ -46,19 +48,21 @@ class _FiltersScreenState extends State<FiltersScreen> {
     "Dla seniora": false,
   };
 
-  double distance = 50;
+  double distance = 50; // Distance filter value
 
+  // Track expanded sections
   bool isCategoryExpanded = false;
   bool isEventTypeExpanded = false;
   bool isAgeExpanded = false;
 
+  // Reset all filters to their default state
   void clearAllFilters() {
     setState(() {
       baseFilters.updateAll((key, value) => false);
       categoryFilters.updateAll((key, value) => false);
       typeOfEventFilters.updateAll((key, value) => false);
       ageFilters.updateAll((key, value) => false);
-      distance = 50; // Resetuje dystans do wartości domyślnej
+      distance = 50;
     });
   }
 
@@ -80,7 +84,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             floating: true,
             elevation: 0,
             leading: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 CupertinoIcons.clear,
                 color: mainDarkBlue,
                 size: 35,
@@ -101,6 +105,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 [
+                  // Expandable filter sections
                   _buildExpandableSection("Kategorie", isCategoryExpanded, () {
                     setState(() {
                       isCategoryExpanded = !isCategoryExpanded;
@@ -130,7 +135,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                           style: TextStyle(color: Colors.grey),
                         ),
                         CustomSlider(
-                          value: distance,
+                          value: distance, // Current slider value
                           min: 0,
                           max: 100,
                           onChanged: (newValue) {
@@ -148,6 +153,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Clear all filters button
                       TextButton(
                         onPressed: () {
                           clearAllFilters();
@@ -157,6 +163,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                           style: TextStyle(color: Colors.blue, fontSize: 16),
                         ),
                       ),
+                      // Show results button
                       ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
@@ -168,7 +175,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                           ),
                         ),
                         child: const Text(
-                          "Pokaż wyniki (24)",
+                          "Pokaż wyniki (24)", // Placeholder for results count
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ),
@@ -183,8 +190,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 
+  // Build a section for non-expandable filters
   Widget _buildFilterSection(Map<String, bool> filters, bool addLastDivider) {
-    final entries = filters.entries.toList();
+    final entries = filters.entries.toList(); // Convert map to list
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -199,7 +207,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 child: CheckboxListTile(
                   visualDensity: VisualDensity.compact,
                   title: Text(
-                    mapEntry.key,
+                    mapEntry.key, // Filter title
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w600),
                   ),
@@ -225,6 +233,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 
+  // Build an expandable filter section with a toggle
   Widget _buildExpandableSection(String title, bool isExpanded,
       VoidCallback toggleExpanded, Map<String, bool> filters) {
     return Column(
@@ -240,8 +249,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   children: [
                     Icon(
                       isExpanded
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
+                          ? Icons.keyboard_arrow_up // Expanded state icon
+                          : Icons.keyboard_arrow_down, // Collapsed state icon
                       color: mainDarkBlue,
                     ),
                     const SizedBox(width: 8),
@@ -259,7 +268,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
         if (isExpanded)
           Padding(
             padding: const EdgeInsets.only(left: 15.0),
-            child: _buildFilterSection(filters, false),
+            child: _buildFilterSection(filters, false), // Nested filters
           ),
         const Divider(
           color: Color.fromARGB(255, 150, 190, 220),

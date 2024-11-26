@@ -7,16 +7,17 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class EventCardDetails extends StatefulWidget {
-  final Event data;
+  final Event data; // Event data to display
   const EventCardDetails({super.key, required this.data});
 
   @override
-  _EventCardDetailsState createState() => _EventCardDetailsState();
+  EventCardDetailsState createState() => EventCardDetailsState();
 }
 
-class _EventCardDetailsState extends State<EventCardDetails> {
+class EventCardDetailsState extends State<EventCardDetails> {
   @override
   Widget build(BuildContext context) {
+    // Displays a popup to add the event to the calendar
     void showCalendarPopup(BuildContext context, Event data) {
       showDialog(
         useSafeArea: false,
@@ -27,6 +28,7 @@ class _EventCardDetailsState extends State<EventCardDetails> {
       );
     }
 
+    // List of action buttons
     List<Map<String, dynamic>> buttonsDataList = [
       {
         'title': "Dodaj do\nkalendarza",
@@ -38,16 +40,21 @@ class _EventCardDetailsState extends State<EventCardDetails> {
       {
         'title': "Udostępnij",
         'icon': MdiIcons.shareVariantOutline,
-        'onPress': () {}
+        'onPress': () {} // Placeholder for sharing functionality
       },
       {
         'title': "Pokaż\nna mapie",
         'icon': MdiIcons.navigationVariantOutline,
-        'onPress': () {}
+        'onPress': () {} // Placeholder for map functionality
       },
-      {'title': "Strona\nWWW", 'icon': MdiIcons.web, 'onPress': () {}}
+      {
+        'title': "Strona\nWWW",
+        'icon': MdiIcons.web,
+        'onPress': () {} // Placeholder for web link
+      }
     ];
 
+    // List of additional event information (e.g., performers or program)
     List<Map<String, dynamic>> eventInfoList = [
       {'title': 'Wykonawcy', 'list': widget.data.contractors},
       {'title': 'Program', 'list': widget.data.eventProgram}
@@ -85,24 +92,30 @@ class _EventCardDetailsState extends State<EventCardDetails> {
             padding: EdgeInsets.zero,
             physics: const BouncingScrollPhysics(),
             children: [
+              // Event title
               Text(
                 widget.data.title,
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
               ),
+              // Event subtitle
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(widget.data.secondTitle,
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.w400)),
+                child: Text(
+                  widget.data.secondTitle,
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w400),
+                ),
               ),
+              // Date
               Text(
                 '${DateFormat('dd.MM.yyyy').format(widget.data.date)} r. | g. ${DateFormat('HH:mm').format(widget.data.date)}',
                 style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: mainDarkBlue),
+                    color: mainDarkBlue), // Date and time of the event
               ),
+              // Location
               Padding(
                 padding: const EdgeInsets.only(top: 6, bottom: 15),
                 child: Text(
@@ -111,6 +124,7 @@ class _EventCardDetailsState extends State<EventCardDetails> {
                       fontSize: 12, fontWeight: FontWeight.w300),
                 ),
               ),
+              // Img
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(7)),
                 child: AspectRatio(
@@ -121,9 +135,38 @@ class _EventCardDetailsState extends State<EventCardDetails> {
                   child: Image.network(
                     widget.data.imageUrl,
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child; // Display the image after loading
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
+                                : null, // Show loading progress
+                            color: Colors.blueAccent,
+                            strokeWidth: 2.5,
+                          ),
+                        );
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        decoration: const BoxDecoration(color: mainGrey),
+                        child: Center(
+                          child: Icon(
+                            MdiIcons.wifiRemove, // Icon for failed image load
+                            size: 50,
+                            color: Colors.red,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
+              // Action buttons
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Row(
@@ -134,72 +177,76 @@ class _EventCardDetailsState extends State<EventCardDetails> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               InkWell(
-                                  onTap: () {
-                                    e['onPress']();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 218, 231, 232),
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    child: Icon(
-                                      e['icon'],
-                                      color: mainGreen,
-                                      size: 40,
-                                    ),
-                                  )),
+                                onTap: () {
+                                  e['onPress']();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(255, 218, 231,
+                                        232), // Button background
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Icon(
+                                    e['icon'], // Button icon
+                                    color: mainGreen,
+                                    size: 40,
+                                  ),
+                                ),
+                              ),
                               Text(
-                                e['title'],
+                                e['title'], // Button title
                                 maxLines: 3,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w900,
                                     fontSize: 11,
                                     color: Colors.grey),
-                              )
+                              ),
                             ],
                           ),
                         )),
                   ],
                 ),
               ),
+              // Event description
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Column(children: [
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  children: [
                     ...eventInfoList.map(
                       (e) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${e['title']}:',
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                            ...e['list'].map((item) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10.0, top: 4, bottom: 4),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.circle,
-                                      size: 4,
-                                      color: Colors.black,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${e['title']}:',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          ...e['list'].map((item) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, top: 4, bottom: 4),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.circle,
+                                    size: 4,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      item, // List item
+                                      style: const TextStyle(fontSize: 14),
                                     ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(fontSize: 14),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ]),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 14.0),
@@ -211,38 +258,47 @@ class _EventCardDetailsState extends State<EventCardDetails> {
                                 borderRadius: BorderRadius.circular(100)),
                             child: Icon(
                               widget.data.isPaid
-                                  ? MdiIcons.currencyUsd
-                                  : MdiIcons.currencyUsdOff,
+                                  ? MdiIcons.currencyUsd // Paid event icon
+                                  : MdiIcons.currencyUsdOff, // Free event icon
                               size: 18,
                             ),
                           ),
-                          const SizedBox(
-                            width: 5,
-                          ),
+                          const SizedBox(width: 5),
                           Text(
                             widget.data.isPaid
-                                ? "Wydazenie płatne"
-                                : "Wydarzenie bezpłatne",
+                                ? "Wydarzenie płatne" // Paid text
+                                : "Wydarzenie bezpłatne", // Free text
                             style: const TextStyle(
                                 fontWeight: FontWeight.w300, fontSize: 12),
-                          )
+                          ),
                         ],
                       ),
                     ),
+                    // Social media
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
-                            onPressed: () {},
-                            icon: Icon(MdiIcons.facebook,
-                                size: 40, color: mainDarkBlue)),
+                          onPressed: () {},
+                          icon: Icon(
+                            MdiIcons.facebook,
+                            size: 40,
+                            color: mainDarkBlue,
+                          ),
+                        ),
                         IconButton(
-                            onPressed: () {},
-                            icon: Icon(MdiIcons.instagram,
-                                size: 40, color: mainDarkBlue))
+                          onPressed: () {},
+                          icon: Icon(
+                            MdiIcons.instagram,
+                            size: 40,
+                            color: mainDarkBlue,
+                          ),
+                        ),
                       ],
-                    )
-                  ])),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
