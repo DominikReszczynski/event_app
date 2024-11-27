@@ -96,7 +96,7 @@ class AddToCalendarState extends State<AddToCalendar> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   // All-day event toggle
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -121,21 +121,21 @@ class AddToCalendarState extends State<AddToCalendar> {
                       ],
                     ),
                   ),
-                  const Divider(height: 30, thickness: 1, color: Colors.black),
+                  const Divider(height: 20, thickness: 1, color: Colors.black),
                   // Start date picker
                   _buildDatePickerRow("Początek", startDate, (date) {
                     setState(() {
                       startDate = date;
                     });
                   }),
-                  const Divider(height: 30, thickness: 1),
+                  const Divider(height: 20, thickness: 1),
                   // End date picker
                   _buildDatePickerRow("Koniec", endDate, (date) {
                     setState(() {
                       endDate = date;
                     });
                   }),
-                  const Divider(height: 30, thickness: 1),
+                  const Divider(height: 20, thickness: 1),
                   // Repeat option dropdown
                   _buildDropdownRow("Powtarzaj", repeatOption, [
                     "Nigdy",
@@ -147,7 +147,7 @@ class AddToCalendarState extends State<AddToCalendar> {
                       repeatOption = value!;
                     });
                   }, true),
-                  const Divider(height: 30, thickness: 1, color: Colors.black),
+                  const Divider(height: 20, thickness: 1, color: Colors.black),
                   // Calendar selection dropdown
                   _buildDropdownRow(
                       "Kalendarz", calendarOption, ["Dom", "Praca"], (value) {
@@ -155,7 +155,7 @@ class AddToCalendarState extends State<AddToCalendar> {
                       calendarOption = value!;
                     });
                   }, true),
-                  const Divider(height: 30, thickness: 1, color: Colors.black),
+                  const Divider(height: 20, thickness: 1, color: Colors.black),
                   // Invitees dropdown
                   _buildDropdownRow(
                     "Zaproszeni",
@@ -168,7 +168,7 @@ class AddToCalendarState extends State<AddToCalendar> {
                     },
                     false,
                   ),
-                  const Divider(height: 30, thickness: 1),
+                  const Divider(height: 20, thickness: 1),
                   // First alert dropdown
                   _buildDropdownRow(
                     "Alert",
@@ -181,7 +181,7 @@ class AddToCalendarState extends State<AddToCalendar> {
                     },
                     true,
                   ),
-                  const Divider(height: 30, thickness: 1, color: Colors.black),
+                  const Divider(height: 20, thickness: 1, color: Colors.black),
                   // Second alert dropdown
                   _buildDropdownRow(
                     "2. alert",
@@ -194,7 +194,7 @@ class AddToCalendarState extends State<AddToCalendar> {
                     },
                     false,
                   ),
-                  const Divider(height: 30, thickness: 1),
+                  const Divider(height: 20, thickness: 1),
                   const SizedBox(height: 50),
                   // Buttons for cancel and add actions
                   Row(
@@ -286,7 +286,7 @@ class AddToCalendarState extends State<AddToCalendar> {
     return Padding(
       padding: EdgeInsets.only(top: isMain ? 30.0 : 0, left: 20, right: 20),
       child: SizedBox(
-        height: 20,
+        height: 22,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

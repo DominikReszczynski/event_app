@@ -130,7 +130,7 @@ class EventCardDetailsState extends State<EventCardDetails> {
                 child: AspectRatio(
                   aspectRatio:
                       MediaQuery.of(context).orientation == Orientation.portrait
-                          ? 16 / 11
+                          ? 16 / 12
                           : 16 / 9,
                   child: Image.network(
                     widget.data.imageUrl,

@@ -4,7 +4,7 @@ final List<Event> eventList = [
   Event(
       id: 'as12',
       title: 'Gala muzyki filmowej',
-      secondTitle: 'Event Second Title',
+      secondTitle: 'Cerkiewicka | Ziółko | Talarczyk | Sztor | Chór',
       contractors: ['Contractor 1', 'Contractor 2'],
       eventProgram: ['Program 1', 'Program 2'],
       date: DateTime.now(),

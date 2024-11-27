@@ -123,6 +123,7 @@ class _EventCardTileState extends State<EventCardTile> {
                         isFavorite = !isFavorite;
                       });
                     },
+                    borderRadius: BorderRadius.circular(100),
                     child: Container(
                       padding: const EdgeInsetsDirectional.all(5),
                       decoration: const BoxDecoration(

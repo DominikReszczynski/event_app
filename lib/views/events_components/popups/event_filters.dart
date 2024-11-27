@@ -106,7 +106,7 @@ class FiltersScreenState extends State<FiltersScreen> {
               delegate: SliverChildListDelegate(
                 [
                   // Expandable filter sections
-                  _buildExpandableSection("Kategorie", isCategoryExpanded, () {
+                  _buildExpandableSection("Kultura", isCategoryExpanded, () {
                     setState(() {
                       isCategoryExpanded = !isCategoryExpanded;
                     });
